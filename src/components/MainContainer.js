@@ -56,7 +56,10 @@ export default function MainContainer() {
         </Grid>
         <Grid item xs={12}>
           <Typography>©Leevi Ojala</Typography>
-          <Button variant="contained" href="#contained-buttons">
+          <Button
+            variant="contained"
+            href="https://github.com/leeviojala/corona-pohjois-savo"
+          >
             Github
           </Button>
         </Grid>
