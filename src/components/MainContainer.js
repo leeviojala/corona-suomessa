@@ -25,7 +25,7 @@ export default function MainContainer() {
         });
 
         kuopioD.forEach((e, i) => {
-          e.count = i;
+          e.count = i + 1;
         });
 
         setKuopioData(kuopioD);
