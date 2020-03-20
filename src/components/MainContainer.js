@@ -9,6 +9,13 @@ import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import useStateWithCallback from "use-state-with-callback";
 
+import { makeStyles } from "@material-ui/core/styles";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
+
 export default function MainContainer() {
   const [data, setData] = useState(null);
   const [kuopioData, setKuopioData] = useState(null);
@@ -24,7 +31,7 @@ export default function MainContainer() {
 
   const handleChange = (event, values) => {
     console.log(values);
-    setSelectedLocation(values);
+    setSelectedLocation(event.target.value);
     //console.log(selectedLocation);
     //loadData();
   };
@@ -72,7 +79,23 @@ export default function MainContainer() {
           <Disclaimer></Disclaimer>
         </Grid>
         <Grid item xs={12} md={6}>
-          <Autocomplete
+          <FormControl fullWidth variant="outlined">
+            <InputLabel id="outlined-label">
+              Valitse sairaanhoitopiiri
+            </InputLabel>
+            <Select
+              labelId="outlined-label"
+              id="outlined"
+              label="Valitse sairaanhoitopiiri"
+              value={selectedLocation}
+              onChange={handleChange}
+            >
+              {location.map(l => {
+                return <MenuItem value={l}>{l}</MenuItem>;
+              })}
+            </Select>
+          </FormControl>
+          {/* <Autocomplete
             options={location}
             getOptionLabel={option => option}
             fullWidth
@@ -84,7 +107,7 @@ export default function MainContainer() {
                 variant="outlined"
               />
             )}
-          />
+          /> */}
         </Grid>
         <Grid item xs={9} md={6}>
           <Count count={count}></Count>
