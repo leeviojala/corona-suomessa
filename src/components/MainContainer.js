@@ -26,7 +26,21 @@ export default function MainContainer() {
     "Etelä-Pohjanmaa",
     "Etelä-Savo",
     "HUS",
-    "Pirkanmaa"
+    "Itä-Savo",
+    "Kainuu",
+    "Kanta-Häme",
+    "Keski-Pohjanmaa",
+    "Keski-Suomi",
+    "Kymenlaakso",
+    "Lappi",
+    "Pirkanmaa",
+    "Pohjois-Karjala",
+    "Pohjois-Pohjanmaa",
+    "Pohjois-Savo",
+    "Päijät-Häme",
+    "Satakunta",
+    "Vaasa",
+    "Varsinais-Suomi"
   ];
 
   const handleChange = (event, values) => {
