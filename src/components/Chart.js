@@ -6,7 +6,10 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  ResponsiveContainer
+  ResponsiveContainer,
+  Legend,
+  Bar,
+  BarChart
 } from "recharts";
 import moment from "moment";
 
@@ -27,8 +30,12 @@ export default function Chart(props) {
           }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="date" tickFormatter={formatDate} />
-          <YAxis allowDecimals={false} />
+          <XAxis
+            dataKey="date"
+            tickFormatter={formatDate}
+            allowDuplicatedCategory={false}
+          />
+          <YAxis allowDecimals={false} allowDuplicatedCategory={false} />
           <Tooltip />
           <Area
             type="monotone"
