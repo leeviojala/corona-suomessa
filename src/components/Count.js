@@ -7,6 +7,7 @@ import InfoIcon from "@material-ui/icons/Info";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
 export default function Count(props) {
+  const [tooltipIsOpen, setTooltipIsOpen] = React.useState(false);
   console.log("count :" + props.count);
   return (
     <Card>
@@ -17,12 +18,14 @@ export default function Count(props) {
           <Fragment>
             <Typography>Arvio todellisesta tartuntojen määrästä:</Typography>
             <Typography variant="h4">
-              {props.count * 10} - {props.count * 30}
+              {props.count * 20} - {props.count * 30}
               <Tooltip
-                disableFocusListener
-                title="Perustuu THL:n antamaan haastatteluun: https://yle.fi/uutiset/3-11259147"
+                open={tooltipIsOpen}
+                title="Perustuu THL:n
+                 antamaan haastatteluun:
+                 https://yle.fi/uutiset/3-11259147"
               >
-                <IconButton>
+                <IconButton onClick={() => setTooltipIsOpen(!tooltipIsOpen)}>
                   <InfoIcon />
                 </IconButton>
               </Tooltip>
