@@ -21,6 +21,7 @@ export default function MainContainer() {
   const [kuopioData, setKuopioData] = useState(null);
   const [count, setCount] = useState(null);
   const [selectedLocation, setSelectedLocation] = useState("");
+  const [deathCount, setDeathCount] = useState("");
   const location = [
     "Etelä-Karjala",
     "Etelä-Pohjanmaa",
@@ -57,7 +58,6 @@ export default function MainContainer() {
   };
 
   const setAllData = response => {
-    console.log("dfdfd");
     setData(response.data);
 
     var kuopioD = response.data.confirmed.filter(i => {
@@ -67,9 +67,12 @@ export default function MainContainer() {
     kuopioD.forEach((e, i) => {
       e.count = i + 1;
     });
-
+    var dCount = response.data.deaths.filter(i => {
+      return i.healthCareDistrict === selectedLocation;
+    });
     setKuopioData(kuopioD);
     setCount(kuopioD.length);
+    setDeathCount(dCount.length);
     console.log(kuopioData);
   };
   useEffect(() => {
@@ -124,7 +127,7 @@ export default function MainContainer() {
           /> */}
         </Grid>
         <Grid item xs={9} md={6}>
-          <Count count={count}></Count>
+          <Count count={count} dCount={deathCount}></Count>
         </Grid>
         <Grid item xs={12}>
           <Chart data={kuopioData}></Chart>

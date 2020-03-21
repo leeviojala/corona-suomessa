@@ -14,6 +14,14 @@ export default function Count(props) {
       <CardContent>
         <Typography>Tartunnan saaneita:</Typography>
         <Typography variant="h4">{props.count}</Typography>
+        {props.dCount ? (
+          <Fragment>
+            <Typography>Kuolleita:</Typography>
+            <Typography variant="h4">{props.dCount}</Typography>
+          </Fragment>
+        ) : (
+          ""
+        )}
         {props.count ? (
           <Fragment>
             <Typography>Arvio todellisesta tartuntojen määrästä:</Typography>
