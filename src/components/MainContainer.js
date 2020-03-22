@@ -16,12 +16,17 @@ import FormHelperText from "@material-ui/core/FormHelperText";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 
+import moment from "moment";
+
 export default function MainContainer() {
   const [data, setData] = useState(null);
   const [kuopioData, setKuopioData] = useState(null);
   const [count, setCount] = useState(null);
-  const [selectedLocation, setSelectedLocation] = useState("");
+  const [selectedLocation, setSelectedLocation] = useState("HUS");
   const [deathCount, setDeathCount] = useState("");
+  const [infTotal, setInfTotal] = useState("");
+  const [deadTotal, setDeadTotal] = useState("");
+  const [coronaData, setCoronaData] = useState("");
   const location = [
     "Etelä-Karjala",
     "Etelä-Pohjanmaa",
@@ -58,22 +63,83 @@ export default function MainContainer() {
   };
 
   const setAllData = response => {
-    setData(response.data);
+    const unique = [
+      ...new Set(
+        response.data.confirmed.map(item => {
+          if (item.healthCareDistrict === selectedLocation) {
+            return moment(item.date).format("DD.MM.YYYY");
+          }
+        })
+      )
+    ];
+    let displayData = [];
+    unique.map(date => {
+      var infCounter = 0;
+      var infTotal = 0;
+      var deadCounter = 0;
+      var deadTotal = 0;
+      var recCounter = 0;
 
-    var kuopioD = response.data.confirmed.filter(i => {
-      return i.healthCareDistrict === selectedLocation;
-    });
+      //käydään läpi tartunnat valitussa sijainnissa
+      response.data.confirmed.map(item => {
+        if (item.healthCareDistrict === selectedLocation) {
+          infTotal = infTotal + 1;
+          if (moment(item.date).format("DD.MM.YYYY") === date) {
+            infCounter = infCounter + 1;
+          }
+        }
+      });
+      setInfTotal(infTotal);
 
-    kuopioD.forEach((e, i) => {
-      e.count = i + 1;
+      //käydään läpi kuolleet
+      response.data.deaths.map(item => {
+        if (item.healthCareDistrict === selectedLocation) {
+          deadTotal = deadTotal + 1;
+          if (moment(item.date).format("DD.MM.YYYY") === date) {
+            deadCounter = deadCounter + 1;
+          }
+        }
+      });
+      setDeadTotal(deadTotal);
+
+      response.data.recovered.map(item => {
+        if (
+          moment(item.date).format("DD.MM.YYYY") === date &&
+          item.healthCareDistrict === selectedLocation
+        ) {
+          recCounter = recCounter + 1;
+        }
+      });
+
+      displayData.push({
+        date: date,
+        infCount: infCounter,
+        deadCount: deadCounter,
+        recCount: recCounter
+      });
     });
-    var dCount = response.data.deaths.filter(i => {
-      return i.healthCareDistrict === selectedLocation;
-    });
-    setKuopioData(kuopioD);
-    setCount(kuopioD.length);
-    setDeathCount(dCount.length);
-    console.log(kuopioData);
+    displayData = displayData.sort(
+      (a, b) => new Date(a.date) - new Date(b.date)
+    );
+
+    setCoronaData(displayData);
+
+    // setData(response.data);
+
+    // var kuopioD = response.data.confirmed.filter(i => {
+    //   return i.healthCareDistrict === selectedLocation;
+    // });
+
+    // kuopioD.forEach((e, i) => {
+    //   e.count = i + 1;
+    // });
+    // var dCount = response.data.deaths.filter(i => {
+    //   return i.healthCareDistrict === selectedLocation;
+    // });
+    // setKuopioData(kuopioD);
+    // setCount(kuopioD.length);
+    // setDeathCount(dCount.length);
+    // console.log(kuopioData);
   };
   useEffect(() => {
     let mounted = true;
@@ -85,7 +151,7 @@ export default function MainContainer() {
     };
   }, [selectedLocation]);
 
-  if (!data) {
+  if (!coronaData) {
     return <div>Loading data</div>;
   }
 
@@ -127,10 +193,10 @@ export default function MainContainer() {
           /> */}
         </Grid>
         <Grid item xs={9} md={6}>
-          <Count count={count} dCount={deathCount}></Count>
+          <Count infTotal={infTotal} deadTotal={deadTotal}></Count>
         </Grid>
         <Grid item xs={12}>
-          <Chart data={kuopioData}></Chart>
+          <Chart data={coronaData}></Chart>
         </Grid>
         <Grid item xs={12}>
           <Typography>©Leevi Ojala</Typography>

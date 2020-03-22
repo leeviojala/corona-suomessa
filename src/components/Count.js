@@ -8,25 +8,24 @@ import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
 export default function Count(props) {
   const [tooltipIsOpen, setTooltipIsOpen] = React.useState(false);
-  console.log("count :" + props.count);
   return (
     <Card>
       <CardContent>
         <Typography>Tartunnan saaneita:</Typography>
-        <Typography variant="h4">{props.count}</Typography>
-        {props.dCount ? (
+        <Typography variant="h4">{props.infTotal}</Typography>
+        {props.deadTotal ? (
           <Fragment>
             <Typography>Kuolleita:</Typography>
-            <Typography variant="h4">{props.dCount}</Typography>
+            <Typography variant="h4">{props.deadTotal}</Typography>
           </Fragment>
         ) : (
           ""
         )}
-        {props.count ? (
+        {props.infTotal ? (
           <Fragment>
             <Typography>Arvio todellisesta tartuntojen määrästä:</Typography>
             <Typography variant="h4">
-              {props.count * 20} - {props.count * 30}
+              {props.infTotal * 20} - {props.infTotal * 30}
               <Tooltip
                 open={tooltipIsOpen}
                 title="Perustuu THL:n
