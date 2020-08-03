@@ -5,26 +5,16 @@ import Disclaimer from "./Disclaimer";
 import Count from "./Count";
 import Chart from "./Chart";
 
-import TextField from "@material-ui/core/TextField";
-import Autocomplete from "@material-ui/lab/Autocomplete";
-import useStateWithCallback from "use-state-with-callback";
-
-import { makeStyles } from "@material-ui/core/styles";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import { Container } from "@material-ui/core";
-import FormHelperText from "@material-ui/core/FormHelperText";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 
 import moment from "moment";
 
 export default function MainContainer() {
-  const [data, setData] = useState(null);
-  const [kuopioData, setKuopioData] = useState(null);
-  const [count, setCount] = useState(null);
   const [selectedLocation, setSelectedLocation] = useState("HUS");
-  const [deathCount, setDeathCount] = useState("");
   const [infTotal, setInfTotal] = useState("");
   const [deadTotal, setDeadTotal] = useState("");
   const [coronaData, setCoronaData] = useState("");
@@ -47,7 +37,7 @@ export default function MainContainer() {
     "Päijät-Häme",
     "Satakunta",
     "Vaasa",
-    "Varsinais-Suomi"
+    "Varsinais-Suomi",
   ];
 
   const handleChange = (event, values) => {
@@ -63,18 +53,18 @@ export default function MainContainer() {
     setAllData(response);
   };
 
-  const setAllData = response => {
+  const setAllData = (response) => {
     const unique = [
       ...new Set(
-        response.data.confirmed.map(item => {
+        response.data.confirmed.map((item) => {
           if (item.healthCareDistrict === selectedLocation) {
             return moment(item.date).format("DD.MM.YYYY");
           }
         })
-      )
+      ),
     ];
     let displayData = [];
-    unique.map(date => {
+    unique.map((date) => {
       var infCounter = 0;
       var infTotal = 0;
       var deadCounter = 0;
@@ -82,7 +72,7 @@ export default function MainContainer() {
       var recCounter = 0;
 
       //käydään läpi tartunnat valitussa sijainnissa
-      response.data.confirmed.map(item => {
+      response.data.confirmed.map((item) => {
         if (item.healthCareDistrict === selectedLocation) {
           infTotal = infTotal + 1;
           if (moment(item.date).format("DD.MM.YYYY") === date) {
@@ -93,7 +83,7 @@ export default function MainContainer() {
       setInfTotal(infTotal);
 
       //käydään läpi kuolleet
-      response.data.deaths.map(item => {
+      response.data.deaths.map((item) => {
         if (item.healthCareDistrict === selectedLocation) {
           deadTotal = deadTotal + 1;
           if (moment(item.date).format("DD.MM.YYYY") === date) {
@@ -103,7 +93,7 @@ export default function MainContainer() {
       });
       setDeadTotal(deadTotal);
 
-      response.data.recovered.map(item => {
+      response.data.recovered.map((item) => {
         if (
           moment(item.date).format("DD.MM.YYYY") === date &&
           item.healthCareDistrict === selectedLocation
@@ -116,7 +106,7 @@ export default function MainContainer() {
         date: date,
         infCount: infCounter,
         deadCount: deadCounter,
-        recCount: recCounter
+        recCount: recCounter,
       });
     });
     displayData = displayData.sort(
@@ -180,7 +170,7 @@ export default function MainContainer() {
                 value={selectedLocation}
                 onChange={handleChange}
               >
-                {location.map(l => {
+                {location.map((l) => {
                   return <MenuItem value={l}>{l}</MenuItem>;
                 })}
               </Select>
