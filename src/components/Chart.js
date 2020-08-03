@@ -7,19 +7,11 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  Legend,
-  Bar,
-  BarChart,
-  Label,
   LabelList
 } from "recharts";
-import moment from "moment";
 import { Typography } from "@material-ui/core";
 
 export default function Chart(props) {
-  function formatDate(tickItem) {
-    return moment(tickItem).format("DD.MM.YYYY");
-  }
   return (
     <React.Fragment>
       <Typography variant="h5">Sairastuneiden määrä päivittäin</Typography>
