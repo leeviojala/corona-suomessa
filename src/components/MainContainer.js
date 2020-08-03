@@ -12,6 +12,7 @@ import useStateWithCallback from "use-state-with-callback";
 import { makeStyles } from "@material-ui/core/styles";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
+import { Container } from "@material-ui/core";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
@@ -57,7 +58,7 @@ export default function MainContainer() {
   };
   const loadData = async () => {
     const response = await axios.get(
-      "https://w3qa5ydb4l.execute-api.eu-west-1.amazonaws.com/prod/finnishCoronaData"
+      "https://w3qa5ydb4l.execute-api.eu-west-1.amazonaws.com/prod/finnishCoronaData/v2"
     );
     setAllData(response);
   };
@@ -157,28 +158,34 @@ export default function MainContainer() {
 
   return (
     <div>
-      <Grid container spacing={3} justify="center" style={{ padding: "10px" }}>
-        <Grid item xs={12}>
-          <Disclaimer></Disclaimer>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <FormControl fullWidth variant="outlined">
-            <InputLabel id="outlined-label">
-              Valitse sairaanhoitopiiri
-            </InputLabel>
-            <Select
-              labelId="outlined-label"
-              id="outlined"
-              label="Valitse sairaanhoitopiiri"
-              value={selectedLocation}
-              onChange={handleChange}
-            >
-              {location.map(l => {
-                return <MenuItem value={l}>{l}</MenuItem>;
-              })}
-            </Select>
-          </FormControl>
-          {/* <Autocomplete
+      <Container>
+        <Grid
+          container
+          spacing={3}
+          justify="center"
+          style={{ padding: "10px" }}
+        >
+          <Grid item xs={12}>
+            <Disclaimer></Disclaimer>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <FormControl fullWidth variant="outlined">
+              <InputLabel id="outlined-label">
+                Valitse sairaanhoitopiiri
+              </InputLabel>
+              <Select
+                labelId="outlined-label"
+                id="outlined"
+                label="Valitse sairaanhoitopiiri"
+                value={selectedLocation}
+                onChange={handleChange}
+              >
+                {location.map(l => {
+                  return <MenuItem value={l}>{l}</MenuItem>;
+                })}
+              </Select>
+            </FormControl>
+            {/* <Autocomplete
             options={location}
             getOptionLabel={option => option}
             fullWidth
@@ -191,23 +198,24 @@ export default function MainContainer() {
               />
             )}
           /> */}
+          </Grid>
+          <Grid item xs={9} md={6}>
+            <Count infTotal={infTotal} deadTotal={deadTotal}></Count>
+          </Grid>
+          <Grid item xs={12}>
+            <Chart data={coronaData}></Chart>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography>©Leevi Ojala</Typography>
+            <Button
+              variant="contained"
+              href="https://github.com/leeviojala/corona-pohjois-savo"
+            >
+              Github
+            </Button>
+          </Grid>
         </Grid>
-        <Grid item xs={9} md={6}>
-          <Count infTotal={infTotal} deadTotal={deadTotal}></Count>
-        </Grid>
-        <Grid item xs={12}>
-          <Chart data={coronaData}></Chart>
-        </Grid>
-        <Grid item xs={12}>
-          <Typography>©Leevi Ojala</Typography>
-          <Button
-            variant="contained"
-            href="https://github.com/leeviojala/corona-pohjois-savo"
-          >
-            Github
-          </Button>
-        </Grid>
-      </Grid>
+      </Container>
     </div>
   );
 }
